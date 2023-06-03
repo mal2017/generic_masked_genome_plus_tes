@@ -1,0 +1,16 @@
+# this workflow's configuration options
+# note that file paths are fed to curl, so they must be prefixed with file://
+# for files that are by choice results of modules, the path is relative to the results directory, so some bash can be used to get the absolute path
+# e.g. GENOME_FASTA: "file://$(realpath results/some_module/genome.fasta)"
+# this approach also allows for the use of pre-generated local resources or remote uris if desired
+GENOME_FASTA: "file:///projectsp/genetics/ellison_lab/matt/JainLabResources/refdata-gex-mm10-2020-A/fasta/genome.fa" # example: a genome fasta file (only tested with uncompressed)
+HOST_GTF: "file:///projectsp/genetics/ellison_lab/matt/JainLabResources/refdata-gex-mm10-2020-A/genes/genes.gtf" # example: a gtf file (only tested with uncompressed)
+REPEATMASKER_ARGS: '-e ncbi -no_is -s'
+
+
+# configuration for each snakemake module used
+modules:
+  generic_dfam_extract:
+    DFAM_CURATED_H5: https://www.dfam.org/releases/Dfam_3.7/families/Dfam_curatedonly.h5.gz
+    FAMDB_ARGS: "--curated -ad 'mus musculus'"
+    DFAM_CLASSES: [SINE,LINE,LTR,DNA,RC]

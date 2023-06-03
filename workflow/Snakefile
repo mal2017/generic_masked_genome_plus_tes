@@ -1,0 +1,22 @@
+from snakemake.utils import min_version
+min_version("6.0")
+
+configfile: "config/config.yaml"
+
+rule all:
+    input: 
+        "results/masked_genome_plus_tes/repeatmasker/GENOME_FASTA.fasta.masked",
+        'results/masked_genome_plus_tes/masked_genome_plus_tes.fasta',
+        "results/masked_genome_plus_tes/transcriptome_plus_tes.gtf",
+        "results/masked_genome_plus_tes/transcriptome_plus_tes.tx2id.tsv"
+
+module generic_dfam_extract:
+    snakefile: github("mal2017/generic_dfam_extract",path="workflow/Snakefile",commit="5c92e14")
+    config: config["modules"]["generic_dfam_extract"]
+
+
+use rule * from generic_dfam_extract as dfam_*
+
+
+include: "rules/repeatmasker.smk"
+include: "rules/custom_transcriptome.smk"
