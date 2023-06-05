@@ -23,7 +23,7 @@ rule repeatmasker:
         gff = 'results/masked_genome_plus_tes/repeatmasker/GENOME_FASTA.fasta.out.gff',
         tbl ='results/masked_genome_plus_tes/repeatmasker/GENOME_FASTA.fasta.tbl',
     threads:
-        24
+        48
     params:
         dir = "results/masked_genome_plus_tes/repeatmasker/",
         args = config.get("REPEATMASKER_ARGS")
@@ -31,8 +31,8 @@ rule repeatmasker:
         "../envs/repeatmasker.yaml"
     resources:
         mem=128000,
-        cpus=24,
-        time=240,
+        cpus=48,
+        time=360,
     shell:
         """
         RepeatMasker {params.args} -pa {threads} \
