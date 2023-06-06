@@ -11,7 +11,7 @@ rule all:
         "results/masked_genome_plus_tes/transcriptome_plus_tes.tx2id.tsv"
 
 module generic_dfam_extract:
-    snakefile: github("mal2017/generic_dfam_extract",path="workflow/Snakefile",commit="5c92e14")
+    snakefile: github("mal2017/generic_dfam_extract",path="workflow/Snakefile",commit="8ffd499")
     config: config["modules"]["generic_dfam_extract"]
 
 
