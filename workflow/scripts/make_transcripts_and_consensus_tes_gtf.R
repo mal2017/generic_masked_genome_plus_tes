@@ -9,12 +9,12 @@ tx <- import(gtffile)
 te_gtf_file <- snakemake@input$te_gtf
 te_gtf <- import(te_gtf_file)
 
-te_gtf$type <- "mRNA"
+te_gtf$type <- "exon"
 te_gtf$gene_symbol <- te_gtf$gene_id
 te_gtf$transcript_symbol <- te_gtf$transcript_id
 te_gtf$gene_name <- te_gtf$gene_id
 te_gtf$transcript_name <- te_gtf$transcript_id
-
+te_gtf$gene_biotype <- "repeat_element"
 
 # make final combined gr
 combined <- c(tx, te_gtf)
