@@ -3,12 +3,15 @@ min_version("6.0")
 
 configfile: "config/config.yaml"
 
+USE_DFAM = False if config.get("REPEAT_FASTA") or len(config.get("REPEAT_FASTA","")) > 1 else True
+
 rule all:
     input: 
         "results/masked_genome_plus_tes/repeatmasker/GENOME_FASTA.fasta.masked",
         'results/masked_genome_plus_tes/masked_genome_plus_tes.fasta',
         "results/masked_genome_plus_tes/transcriptome_plus_tes.gtf",
-        "results/masked_genome_plus_tes/transcriptome_plus_tes.tx2id.tsv"
+        "results/masked_genome_plus_tes/transcriptome_plus_tes.tx2id.tsv",
+        "results/masked_genome_plus_tes/transcriptome_plus_tes.fasta"
 
 module generic_dfam_extract:
     snakefile: github("mal2017/generic_dfam_extract",path="workflow/Snakefile",commit="23fc6f8")

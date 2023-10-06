@@ -1,8 +1,8 @@
 rule get_te_gtf:
     input:
-        fasta = rules.dfam_collect_dfam.output.fa,
+        fasta = rules.dfam_collect_dfam.output.fa if USE_DFAM else rules.get_custom_repeat_fasta.output.fasta,
     output:
-        fai = rules.dfam_collect_dfam.output.fa + '.fai',
+        fai = rules.dfam_collect_dfam.output.fa  + '.fai' if USE_DFAM else rules.get_custom_repeat_fasta.output.fasta + '.fai',
         bed = 'results/masked_genome_plus_tes/custom_transcriptome/REPEAT_FASTA.bed',
         gp = "results/masked_genome_plus_tes/custom_transcriptome/REPEAT_FASTA.gp",
         gtf = 'results/masked_genome_plus_tes/custom_transcriptome/REPEAT_FASTA.consensus.gtf',
@@ -26,7 +26,11 @@ rule get_gtf:
         uri = lambda wc: config.get("HOST_GTF")
     shell:
         """
-        curl {params.uri} > {output.gtf}
+        if [[ "{params.uri}" == *.gz ]]; then
+            curl {params.uri} | gunzip -c > {output.gtf}
+        else
+            curl {params.uri} > {output.gtf}
+        fi
         """
 
 
@@ -59,3 +63,27 @@ rule make_transcripts_and_consensus_tes_tx2gene:
         "../envs/rtracklayer.yaml"
     script:
         "../scripts/make_transcripts_and_consensus_tes_tx2gene.R"
+
+rule get_transcript_fasta:
+    output:
+        fasta = 'results/masked_genome_plus_tes/TRANCRIPT_FASTA.fasta'
+    params:
+        uri = lambda wc: config.get("TRANSCRIPT_FASTA")
+    shell:
+        """
+        if [[ "{params.uri}" == *.gz ]]; then
+            curl {params.uri} | gunzip -c > {output.fasta}
+        else
+            curl {params.uri} > {output.fasta}
+        fi
+        """
+rule make_transcripts_and_consensus_tes_fa:
+    input:
+        tes = rules.dfam_collect_dfam.output.fa if USE_DFAM else rules.get_custom_repeat_fasta.output.fasta,
+        transcripts = rules.get_transcript_fasta.output.fasta,
+    output:
+        fasta = "results/masked_genome_plus_tes/transcriptome_plus_tes.fasta",
+    shell:
+        """
+        cat {input.transcripts} {input.tes} > {output.fasta}
+        """
