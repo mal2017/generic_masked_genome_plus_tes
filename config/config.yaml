@@ -3,17 +3,10 @@
 # for files that are by choice results of modules, the path is relative to the results directory, so some bash can be used to get the absolute path
 # e.g. GENOME_FASTA: "file://$(realpath results/some_module/genome.fasta)"
 # this approach also allows for the use of pre-generated local resources or remote uris if desired
-GENOME_FASTA: "http://ftp.flybase.net/releases/FB2023_05/dmel_r6.54/fasta/dmel-all-chromosome-r6.54.fasta.gz" # example: a genome fasta file (only tested with uncompressed, but should automatically gunzip if compressed)
-TRANSCRIPT_FASTA: "http://ftp.flybase.net/releases/FB2023_05/dmel_r6.54/fasta/dmel-all-transcript-r6.54.fasta.gz" # example: a transcript fasta file (only tested with uncompressed, but should automatically gunzip if compressed)
-HOST_GTF: "http://ftp.flybase.net/releases/FB2023_05/dmel_r6.54/gtf/dmel-all-r6.54.gtf.gz" # example: a gtf file (only tested with uncompressed, but should automatically gunzip if compressed)
 REPEATMASKER_ARGS: '-e ncbi -no_is -s'
-REPEAT_FASTA: "https://raw.githubusercontent.com/bergmanlab/drosophila-transposons/master/releases/D_mel_transposon_sequence_set_v10.2.fa" # if this exists, it will be used instead of running the generic_dfam_extract module
-
-
-# configuration for each snakemake module used
-# not used if REPEAT_FASTA is set
-modules:
-  generic_dfam_extract:
-    DFAM_CURATED_H5: https://www.dfam.org/releases/Dfam_3.7/families/Dfam_curatedonly.h5.gz
-    FAMDB_ARGS: "--curated -ad 'drosophila melanogaster'"
-    DFAM_CLASSES: [SINE,LINE,LTR,DNA,RC]
+ASSEMBLIES: 
+  dmel:
+    GENOME_FASTA: "http://ftp.flybase.net/releases/FB2023_05/dmel_r6.54/fasta/dmel-all-chromosome-r6.54.fasta.gz" # example: a genome fasta file (only tested with uncompressed, but should automatically gunzip if compressed)
+    TRANSCRIPT_FASTA: "http://ftp.flybase.net/releases/FB2023_05/dmel_r6.54/fasta/dmel-all-transcript-r6.54.fasta.gz" # example: a transcript fasta file (only tested with uncompressed, but should automatically gunzip if compressed)
+    HOST_GTF: "http://ftp.flybase.net/releases/FB2023_05/dmel_r6.54/gtf/dmel-all-r6.54.gtf.gz" # example: a gtf file (only tested with uncompressed, but should automatically gunzip if compressed)
+    REPEAT_FASTA: "https://raw.githubusercontent.com/bergmanlab/drosophila-transposons/master/releases/D_mel_transposon_sequence_set_v10.2.fa" # if this exists, it will be used instead of running the generic_dfam_extract module

@@ -3,6 +3,7 @@
 Expects a config containing the following:
     - GENOME_FASTA
     - HOST_GTF
+    - REPEAT_FASTA
 
 Yields the following
     results/masked_genome_plus_tes/genome.masked.fasta
@@ -10,10 +11,18 @@ Yields the following
 
 ## Configuration
 
-Must include all configuration for any modules as well.
-
 It has a default repeatmasker argument set, which can be overridden by editing the following portion of the config: `REPEATMASKER_ARGS`
 
-Previous versions of this workflow only pulled TE seqs from DFAM. In the current version, you can optionally include a REPEAT_FASTA entry in the configfile. 
-Detection of this entry skips the DFAM extraction step and allows you to use any fasta as an argument to the `-lib` param for `repeatmasker`. It is currently set
-to a curated Dmel TE set made available at the [Bergman Lab github repo](https://github.com/bergmanlab/drosophila-transposons/tree/master).
+## Use of generic_dfam_extract workflow or other in-workflow sources of TEs
+
+Previous versions of this pipeline included the module github://mal2017/generic_dfam_extract @ commit 23fc6f8. This nested module import approach caused major problems when importing this module into some other workflows. This has been removed on a trial basis, and any downstream workflows that want to use both in concert will have to import both separately, and then modify the `params` and/or `input` directives of the rules in `workflow/rules/getters.smk` to bypass looking for URIs in the config, and instead look for this in generic_dfam_extract or some other rule's output.
+
+For example, to rewire this to take some locally produced genome (e.g. a _de novo_ assembly), you could add an `input` directive and modify the `params` directive in the same pattern as the following example.
+
+```
+use rule get_genome_fasta from generic_masked_genome_plus_tes with:
+    input:
+        uri = rules.something_else.output
+    params:
+        uri = rules.something_else.output
+```

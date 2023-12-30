@@ -1,25 +1,16 @@
 from snakemake.utils import min_version
-min_version("6.0")
+min_version("8.0")
 
 configfile: "config/config.yaml"
 
-USE_DFAM = False if config.get("REPEAT_FASTA") or len(config.get("REPEAT_FASTA","")) > 1 else True
-
 rule all:
     input: 
-        "results/masked_genome_plus_tes/repeatmasker/GENOME_FASTA.fasta.masked",
-        'results/masked_genome_plus_tes/masked_genome_plus_tes.fasta',
-        "results/masked_genome_plus_tes/transcriptome_plus_tes.gtf",
-        "results/masked_genome_plus_tes/transcriptome_plus_tes.tx2id.tsv",
-        "results/masked_genome_plus_tes/transcriptome_plus_tes.fasta"
+        expand("results/masked_genome_plus_tes/{a}/repeatmasker/GENOME_FASTA.fasta.masked",a=config["ASSEMBLIES"]),
+        expand('results/masked_genome_plus_tes/{a}/masked_genome_plus_tes.fasta',a=config["ASSEMBLIES"]),
+        expand("results/masked_genome_plus_tes/{a}/transcriptome_plus_tes.gtf",a=config["ASSEMBLIES"]),
+        expand("results/masked_genome_plus_tes/{a}/transcriptome_plus_tes.tx2id.tsv",a=config["ASSEMBLIES"]),
+        expand("results/masked_genome_plus_tes/{a}/transcriptome_plus_tes.fasta",a=config["ASSEMBLIES"]),
 
-module generic_dfam_extract:
-    snakefile: github("mal2017/generic_dfam_extract",path="workflow/Snakefile",commit="23fc6f8")
-    config: config["modules"]["generic_dfam_extract"]
-
-
-use rule * from generic_dfam_extract as dfam_*
-
-
+include: "rules/getters.smk"
 include: "rules/repeatmasker.smk"
 include: "rules/custom_transcriptome.smk"
