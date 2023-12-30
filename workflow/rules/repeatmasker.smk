@@ -17,9 +17,9 @@ rule repeatmasker:
     conda:
         "../envs/repeatmasker.yaml"
     resources:
-        mem=128000,
+        mem_mb=128000,
         cpus=48,
-        time=360,
+        runtime=360,
     shell:
         """
         RepeatMasker {params.args} -pa {threads} \
