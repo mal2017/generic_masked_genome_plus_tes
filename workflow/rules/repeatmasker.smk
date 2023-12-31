@@ -1,7 +1,7 @@
 rule repeatmasker:
     input:
-        repeats = rules.get_custom_repeat_fasta.output.fasta,
-        fasta = rules.get_genome_fasta.output.fasta
+        repeats = 'results/masked_genome_plus_tes/{asm}/REPEAT_FASTA.fasta',
+        fasta = 'results/masked_genome_plus_tes/{asm}/GENOME_FASTA.fasta'
     output:
         unmasked = 'results/masked_genome_plus_tes/{asm}/repeatmasker/GENOME_FASTA.fasta.cat.gz',
         masked = 'results/masked_genome_plus_tes/{asm}/repeatmasker/GENOME_FASTA.fasta.masked',
