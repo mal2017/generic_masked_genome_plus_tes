@@ -13,7 +13,7 @@ rule repeatmasker:
         48
     params:
         dir = "results/masked_genome_plus_tes/{asm}/repeatmasker/",
-        args = config.get("REPEATMASKER_ARGS")
+        args = '-e ncbi -no_is -s' #config.get("REPEATMASKER_ARGS")
     conda:
         "../envs/repeatmasker.yaml"
     resources:

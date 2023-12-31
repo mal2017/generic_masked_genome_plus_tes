@@ -1,15 +1,15 @@
 from snakemake.utils import min_version
 min_version("8.0")
 
-configfile: "config/config.yaml"
+#configfile: "config/config.yaml"
 
-rule all:
-    input: 
-        expand("results/masked_genome_plus_tes/{a}/repeatmasker/GENOME_FASTA.fasta.masked",a=config["ASSEMBLIES"]),
-        expand('results/masked_genome_plus_tes/{a}/masked_genome_plus_tes.fasta',a=config["ASSEMBLIES"]),
-        expand("results/masked_genome_plus_tes/{a}/transcriptome_plus_tes.gtf",a=config["ASSEMBLIES"]),
-        expand("results/masked_genome_plus_tes/{a}/transcriptome_plus_tes.tx2id.tsv",a=config["ASSEMBLIES"]),
-        expand("results/masked_genome_plus_tes/{a}/transcriptome_plus_tes.fasta",a=config["ASSEMBLIES"]),
+# rule all:
+#     input: 
+#         expand("results/masked_genome_plus_tes/{a}/repeatmasker/GENOME_FASTA.fasta.masked",a=config["ASSEMBLIES"]),
+#         expand('results/masked_genome_plus_tes/{a}/masked_genome_plus_tes.fasta',a=config["ASSEMBLIES"]),
+#         expand("results/masked_genome_plus_tes/{a}/transcriptome_plus_tes.gtf",a=config["ASSEMBLIES"]),
+#         expand("results/masked_genome_plus_tes/{a}/transcriptome_plus_tes.tx2id.tsv",a=config["ASSEMBLIES"]),
+#         expand("results/masked_genome_plus_tes/{a}/transcriptome_plus_tes.fasta",a=config["ASSEMBLIES"]),
 
 include: "rules/getters.smk"
 include: "rules/repeatmasker.smk"

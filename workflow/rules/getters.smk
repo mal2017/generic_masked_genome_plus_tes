@@ -3,7 +3,8 @@ localrules: cat_genome_and_tes, get_custom_repeat_fasta, get_genome_fasta
 
 rule get_gtf:
     params: 
-        uri = lambda wc: config['ASSEMBLIES'].get(wc.asm).get("HOST_GTF")
+        #uri = lambda wc: config['ASSEMBLIES'].get(wc.asm).get("HOST_GTF")
+        uri = "dummy"
     output:
         gtf = 'results/masked_genome_plus_tes/{asm}/transcriptome.gtf'
     shell:
@@ -17,7 +18,8 @@ rule get_gtf:
 
 rule get_custom_repeat_fasta:
     params:
-        uri = lambda wc: config['ASSEMBLIES'].get(wc.asm).get("REPEAT_FASTA")
+        #uri = lambda wc: config['ASSEMBLIES'].get(wc.asm).get("REPEAT_FASTA")
+        uri = "dummy"
     output:
         fasta = 'results/masked_genome_plus_tes/{asm}/REPEAT_FASTA.fasta'
     shell:
@@ -32,7 +34,8 @@ rule get_custom_repeat_fasta:
 
 rule get_genome_fasta:
     params:
-        uri = lambda wc: config['ASSEMBLIES'].get(wc.asm).get("GENOME_FASTA")
+        #uri = lambda wc: config['ASSEMBLIES'].get(wc.asm).get("GENOME_FASTA")
+        uri = "dummy"
     output:
         fasta = 'results/masked_genome_plus_tes/{asm}/GENOME_FASTA.fasta'
     shell:
@@ -48,7 +51,8 @@ rule get_transcript_fasta:
     output:
         fasta = 'results/masked_genome_plus_tes/{asm}/TRANCRIPT_FASTA.fasta'
     params:
-        uri = lambda wc: config["ASSEMBLIES"].get(wc.asm).get("TRANSCRIPT_FASTA")
+        #uri = lambda wc: config["ASSEMBLIES"].get(wc.asm).get("TRANSCRIPT_FASTA")
+        uri = "dummy"
     shell:
         """
         if [[ "{params.uri}" == *.gz ]]; then
